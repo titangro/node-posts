@@ -1,17 +1,23 @@
 import { Entity, PrimaryKey, Property } from 'mikro-orm';
+import { ObjectType, Field } from 'type-graphql';
 
+@ObjectType()
 @Entity()
 export class Post {
+  @Field()
   @PrimaryKey()
   id!: number;
 
-  @Property()
+  @Field(() => String)
+  @Property({ type: 'date', default: 'NOW()' })
   createdAt = new Date();
 
-  @Property({ onUpdate: () => new Date() })
+  @Field(() => String)
+  @Property({ type: 'date', default: 'NOW()', onUpdate: () => new Date() })
   updatedAt = new Date();
 
-  @Property()
+  @Field()
+  @Property({ type: 'text' })
   title!: string;
 
   // @ManyToOne() // when you provide correct type hint, ORM will read it for you
